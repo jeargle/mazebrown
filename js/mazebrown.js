@@ -27,6 +27,7 @@ var mouseDown = null;
 var mouseMove = null;
 var mouseUp = null;
 var isDragging = false;
+var mouseButton = 1;
 
 function Point(x,y) {
     this.x = x;
@@ -89,9 +90,9 @@ function initStageObjects() {
         numWallRows = lines.length;
         numWallCols = lines[0].length;
         for (i=0; i<numWallRows; i++) {
-            walls[i] = lines[i].split("");
+            walls[i] = lines[i].split("").map(x => parseInt(x, 10));
             if (walls[i].length != numWallRows) {
-                context.clearRect(0,0,400,60);
+                context.clearRect(0, 0, 400, 60);
                 context.font = "18pt Minion";
                 context.fillStyle = "dimgray";
                 context.textAlign = "center";
@@ -106,7 +107,7 @@ function drawStageObjects1() {
 
     for (i=0; i<numWallRows; i++) {
         for (j=0; j<numWallCols; j++) {
-            if (walls[i][j] === 1) {
+            if (walls[i][j] >= 1) {
                 context.beginPath();
 	        context.rect(j*wallSize, i*wallSize, wallSize, wallSize);
                 context.fillStyle = "darkblue";
@@ -285,7 +286,12 @@ function handleMouseMove(event) {
         mouseX = event.clientX - canvas.offsetLeft;
         mouseY = event.clientY - canvas.offsetTop;
 
-        setWall(mouseX,mouseY);
+        if (mouseButton === 1) {
+            setWall(mouseX, mouseY);
+        }
+        else if (mouseButton === 3) {
+            unsetWall(mouseX, mouseY);
+        }
     }
 }
 
@@ -293,12 +299,24 @@ function handleMouseMove(event) {
 function handleMouseDown(event) {
     var mouseX, mouseY;
 
+    if (event.which === 3 || event.metaKey) {
+        mouseButton = 3;
+    }
+    else {
+        mouseButton = 1;
+    }
+
     mouseX = event.clientX - canvas.offsetLeft;
     mouseY = event.clientY - canvas.offsetTop;
 
     isDragging = true;
 
-    setWall(mouseX,mouseY);
+    if (mouseButton === 1) {
+        setWall(mouseX, mouseY);
+    }
+    else if (mouseButton === 3) {
+        unsetWall(mouseX, mouseY);
+    }
 }
 
 
@@ -307,7 +325,7 @@ function handleMouseUp(event) {
 }
 
 
-function setWall(x,y) {
+function setWall(x, y) {
     var row, col;
 
     row = Math.floor(y / wallSize);
@@ -316,7 +334,24 @@ function setWall(x,y) {
     if (row >= 0 &&
         row < numWallRows &&
         col > 0 &&
-        col < numWallCols) {
-        walls[row][col] = 1;
+        col < numWallCols &&
+        walls[row][col] === 0) {
+        walls[row][col] = 2;
+    }
+}
+
+
+function unsetWall(x, y) {
+    var row, col;
+
+    row = Math.floor(y / wallSize);
+    col = Math.floor(x / wallSize);
+
+    if (row >= 0 &&
+        row < numWallRows &&
+        col > 0 &&
+        col < numWallCols &&
+        walls[row][col] > 1) {
+        walls[row][col] = 0;
     }
 }
