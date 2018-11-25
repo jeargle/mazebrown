@@ -29,8 +29,8 @@ var mouseUp = null;
 var isDragging = false;
 
 function Point(x,y) {
-    this.x=x;
-    this.y=y;
+    this.x = x;
+    this.y = y;
 }
 
 function Rectangle(x, y, width, height, borderWidth, fillStyle) {
@@ -83,7 +83,7 @@ function initStageObjects() {
     req = new XMLHttpRequest();
     req.open('GET', 'maze1.txt', false);
     req.send(null);
-    if (req.status == 200) {
+    if (req.status === 200) {
         // dump(req.responseText);
         lines = req.responseText.split("\n");
         numWallRows = lines.length;
@@ -106,10 +106,10 @@ function drawStageObjects1() {
 
     for (i=0; i<numWallRows; i++) {
         for (j=0; j<numWallCols; j++) {
-            if (walls[i][j] == 1) {
+            if (walls[i][j] === 1) {
                 context.beginPath();
 	        context.rect(j*wallSize, i*wallSize, wallSize, wallSize);
-                context.fillStyle="darkblue";
+                context.fillStyle = "darkblue";
 	        context.fill();
             }
         }
@@ -121,9 +121,9 @@ function drawStageObjects1() {
         for (j=1; j<myRoutes[i].length; j++) {
             context.lineTo(myRoutes[i][j].x,myRoutes[i][j].y);
         }
-        context.lineWidth=1;
-        context.lineJoin="miter";
-        context.strokeStyle="#8ED6FF";
+        context.lineWidth = 1;
+        context.lineJoin = "miter";
+        context.strokeStyle = "#8ED6FF";
         context.stroke();
     }
 
@@ -132,10 +132,10 @@ function drawStageObjects1() {
         context.rect(myRectangles[i].x,myRectangles[i].y,
       	             myRectangles[i].width,myRectangles[i].height);
 
-        context.fillStyle=myRectangles[i].fillStyle;
+        context.fillStyle = myRectangles[i].fillStyle;
         context.fill();
-        context.lineWidth=myRectangles[i].borderWidth;
-        context.strokeStyle="darkblue";
+        context.lineWidth = myRectangles[i].borderWidth;
+        context.strokeStyle = "darkblue";
         context.stroke();
     }
 
@@ -145,10 +145,10 @@ function drawStageObjects2() {
     context.beginPath();
     context.rect(myRectangle.x, myRectangle.y,
 	         myRectangle.width, myRectangle.height);
-    context.fillStyle="#8ED6FF";
+    context.fillStyle = "#8ED6FF";
     context.fill();
-    context.lineWidth=myRectangle.borderWidth;
-    context.strokeStyle="darkblue";
+    context.lineWidth = myRectangle.borderWidth;
+    context.strokeStyle = "darkblue";
     context.stroke();
 }
 
@@ -244,7 +244,7 @@ function blockIsClear(x,y) {
 
     col = Math.floor(x / wallSize);
     row = Math.floor(y / wallSize);
-    if (walls[row][col] == 0) {
+    if (walls[row][col] === 0) {
         return true;
     }
     return false;
@@ -296,14 +296,14 @@ function handleMouseDown(event) {
     mouseX = event.clientX - canvas.offsetLeft;
     mouseY = event.clientY - canvas.offsetTop;
 
-    isDragging=true;
+    isDragging = true;
 
     setWall(mouseX,mouseY);
 }
 
 
 function handleMouseUp(event) {
-    isDragging=false;
+    isDragging = false;
 }
 
 
@@ -313,7 +313,10 @@ function setWall(x,y) {
     row = Math.floor(y / wallSize);
     col = Math.floor(x / wallSize);
 
-    if (row >= 0 && row < numWallRows && col > 0 && col < numWallCols) {
+    if (row >= 0 &&
+        row < numWallRows &&
+        col > 0 &&
+        col < numWallCols) {
         walls[row][col] = 1;
     }
 }
