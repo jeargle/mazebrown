@@ -1,20 +1,3 @@
-<!DOCTYPE HTML>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-
-<style>
-  body {
-  margin:0px;
-  padding:0px;
-  }
-  #myCanvas {
-  border:1px solid #9C9898;
-  }
-</style>
-
-<script>
-
 var t=0;           // time in ms
 //var fps = 100;     // frames per second
 var fps = 20;      // frames per second
@@ -61,7 +44,7 @@ function Rectangle(x, y, width, height, borderWidth, fillStyle) {
 
 function init() {
   canvas = document.getElementById("myCanvas");
-  context = canvas.getContext("2d");	
+  context = canvas.getContext("2d");
   initStageObjects();
   drawStageObjects1();
   //setInterval(updateStage, timeInterval);
@@ -72,7 +55,7 @@ function updateStage() {
   t += timeInterval;
   clearCanvas1();
   updateStageObjects1();
-  drawStageObjects1();	
+  drawStageObjects1();
   setTimeout(updateStage, timeInterval);
 }
 
@@ -149,7 +132,7 @@ function drawStageObjects1() {
     context.fillStyle=myRectangles[i].fillStyle;
     context.fill();
     context.lineWidth=myRectangles[i].borderWidth;
-    context.strokeStyle="darkblue"; 
+    context.strokeStyle="darkblue";
     context.stroke();
   }
 
@@ -162,7 +145,7 @@ function drawStageObjects2() {
   context.fillStyle="#8ED6FF";
   context.fill();
   context.lineWidth=myRectangle.borderWidth;
-  context.strokeStyle="darkblue"; 
+  context.strokeStyle="darkblue";
   context.stroke();
                              }
 
@@ -252,7 +235,7 @@ function blockIsClear(x,y) {
   if (walls[row][col] == 0) {
     return true;
   }
-  return false;  
+  return false;
 }
 
 function clearCanvas1() {
@@ -316,11 +299,3 @@ function setWall(x,y) {
     walls[row][col] = 1;
   }
 }
-</script>
-</head>
-
-<body onload="init()" onMouseMove="registerMouseMove(event)" onMouseUp="registerMouseUp(event)" onMouseDown="registerMouseDown(event)">
-  <canvas id="myCanvas" width="310" height="310"></canvas>
-</body>
-
-</html>
