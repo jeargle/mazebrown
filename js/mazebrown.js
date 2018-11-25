@@ -1,4 +1,4 @@
-var t=0;                // time in ms
+var t = 0;                // time in ms
 // var fps = 100;          // frames per second
 var fps = 20;           // frames per second
 var timeInterval = 1000 / fps;   // in ms
@@ -47,7 +47,7 @@ function init() {
     context = canvas.getContext("2d");
     initStageObjects();
     drawStageObjects1();
-    //setInterval(updateStage, timeInterval);
+    // setInterval(updateStage, timeInterval);
     setTimeout(updateStage, timeInterval);
 }
 
@@ -84,7 +84,7 @@ function initStageObjects() {
     req.open('GET', 'maze1.txt', false);
     req.send(null);
     if (req.status == 200) {
-        //dump(req.responseText);
+        // dump(req.responseText);
         lines = req.responseText.split("\n");
         numWallRows = lines.length;
         numWallCols = lines[0].length;
@@ -102,6 +102,7 @@ function initStageObjects() {
 }
 
 function drawStageObjects1() {
+    var i, j;
 
     for (i=0; i<numWallRows; i++) {
         for (j=0; j<numWallCols; j++) {
@@ -152,14 +153,18 @@ function drawStageObjects2() {
 }
 
 function updateStageObjects1() {
+    var i, direction, nextX, nextY, scale;
+
     if (mouseDown != null) {
         handleMouseDown(mouseDown);
         mouseDown = null;
     }
+
     if (mouseMove != null) {
         handleMouseMove(mouseMove);
         mouseMove = null;
     }
+
     if (mouseUp != null) {
         handleMouseUp(mouseUp);
         mouseUp = null;
@@ -167,10 +172,10 @@ function updateStageObjects1() {
 
     // Move rectangle randomly +-1 unit in the x and/or y directions
     for (i=0; i<numRectangles; i++) {
-        var direction = Math.floor(Math.random()*4);
-        var nextX = 0;
-        var nextY = 0;
-        var scale = 5;
+        direction = Math.floor(Math.random()*4);
+        nextX = 0;
+        nextY = 0;
+        scale = 5;
         switch(direction)
         {
             case 0:
@@ -213,9 +218,11 @@ function updateStageObjects1() {
 }
 
 function updateStageObjects2() {
+    var nextX, nextY;
+
     // Move rectangle randomly +-1 unit in the x and/or y directions
-    var nextX = (Math.floor(Math.random()*3) - 1)*5 + myRectangle.x;
-    var nextY = (Math.floor(Math.random()*3) - 1)*5 + myRectangle.y;
+    nextX = (Math.floor(Math.random()*3) - 1)*5 + myRectangle.x;
+    nextY = (Math.floor(Math.random()*3) - 1)*5 + myRectangle.y;
     myRectangle.x = nextX;
     myRectangle.y = nextY;
     myRoute.push(new Point(nextX + myRectangle.width/2,
@@ -223,17 +230,20 @@ function updateStageObjects2() {
 }
 
 function updateStageObjects3() {
+    var nextX, nextY;
+
     // Move rectangle randomly +-1 unit in the x and/or y directions
-    var nextX = Math.floor(Math.random()*3) - 1 + myRectangle.x;
-    var nextY = Math.floor(Math.random()*3) - 1 + myRectangle.y;
+    nextX = Math.floor(Math.random()*3) - 1 + myRectangle.x;
+    nextY = Math.floor(Math.random()*3) - 1 + myRectangle.y;
     myRectangle.x = nextX;
     myRectangle.y = nextY;
 }
 
 function blockIsClear(x,y) {
+    var col, row;
 
-    var col = Math.floor(x / wallSize);
-    var row = Math.floor(y / wallSize);
+    col = Math.floor(x / wallSize);
+    row = Math.floor(y / wallSize);
     if (walls[row][col] == 0) {
         return true;
     }
@@ -247,9 +257,9 @@ function clearCanvas1() {
 function clearCanvas2() {
     context.clearRect(myRectangle.x-padding, myPaddedRectangle.y-padding,
 	              myPaddedRectangle.width+(padding*2), myPaddedRectangle.height+(padding*2));
-    //context.clearRect(myPaddedRectangle.x, myPaddedRectangle.y,
-    //        myPaddedRectangle.width, myPaddedRectangle.height);
-    //context.clearRect(0,0,canvas.width, canvas.height);
+    // context.clearRect(myPaddedRectangle.x, myPaddedRectangle.y,
+    //                   myPaddedRectangle.width, myPaddedRectangle.height);
+    // context.clearRect(0,0,canvas.width, canvas.height);
 }
 
 
@@ -269,9 +279,11 @@ function registerMouseUp(event) {
 
 
 function handleMouseMove(event) {
+    var mouseX, mouseY;
+
     if (isDragging) {
-        var mouseX = event.clientX - canvas.offsetLeft;
-        var mouseY = event.clientY - canvas.offsetTop;
+        mouseX = event.clientX - canvas.offsetLeft;
+        mouseY = event.clientY - canvas.offsetTop;
 
         setWall(mouseX,mouseY);
     }
