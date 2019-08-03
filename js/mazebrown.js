@@ -1,33 +1,33 @@
-var t = 0                // time in ms
-// var fps = 100          // frames per second
-var fps = 20           // frames per second
-var timeInterval = 1000 / fps   // in ms
-var canvas = null      // canvas DOM object
-var context = null     // canvas context
+let t = 0                // time in ms
+// let fps = 100          // frames per second
+let fps = 20           // frames per second
+let timeInterval = 1000 / fps   // in ms
+let canvas = null      // canvas DOM object
+let context = null     // canvas context
 
-var amplitude = 150
-var centerX = 0
-var centerY = 0
-var period = 4000      // in ms
+let amplitude = 150
+let centerX = 0
+let centerY = 0
+let period = 4000      // in ms
 
-var numRectangles = 9
-var myRectangles = new Array(numRectangles)
-var padding = 2
-var colorWheel = new Array()
+let numRectangles = 9
+let myRectangles = new Array(numRectangles)
+let padding = 2
+let colorWheel = new Array()
 
-var routeLength = 200
-var myRoutes = new Array(numRectangles)
+let routeLength = 200
+let myRoutes = new Array(numRectangles)
 
-var numWallRows
-var numWallCols
-var walls = new Array()
-var wallSize = 10
+let numWallRows
+let numWallCols
+let walls = new Array()
+let wallSize = 10
 
-var mouseDown = null
-var mouseMove = null
-var mouseUp = null
-var isDragging = false
-var mouseButton = 1
+let mouseDown = null
+let mouseMove = null
+let mouseUp = null
+let isDragging = false
+let mouseButton = 1
 
 function Point(x,y) {
     this.x = x
@@ -61,7 +61,7 @@ function updateStage() {
 }
 
 function initStageObjects() {
-    var width, height, color, i, req, lines
+    let width, height, color, i, req, lines
 
     colorWheel.push("#8ED6FF")
     colorWheel.push("#D6FF8E")
@@ -103,7 +103,7 @@ function initStageObjects() {
 }
 
 function drawStageObjects1() {
-    var i, j
+    let i, j
 
     for (i=0; i<numWallRows; i++) {
         for (j=0; j<numWallCols; j++) {
@@ -154,7 +154,7 @@ function drawStageObjects2() {
 }
 
 function updateStageObjects1() {
-    var i, direction, nextX, nextY, scale
+    let i, direction, nextX, nextY, scale
 
     if (mouseDown != null) {
         handleMouseDown(mouseDown)
@@ -219,7 +219,7 @@ function updateStageObjects1() {
 }
 
 function updateStageObjects2() {
-    var nextX, nextY
+    let nextX, nextY
 
     // Move rectangle randomly +-1 unit in the x and/or y directions
     nextX = (Math.floor(Math.random()*3) - 1)*5 + myRectangle.x
@@ -231,7 +231,7 @@ function updateStageObjects2() {
 }
 
 function updateStageObjects3() {
-    var nextX, nextY
+    let nextX, nextY
 
     // Move rectangle randomly +-1 unit in the x and/or y directions
     nextX = Math.floor(Math.random()*3) - 1 + myRectangle.x
@@ -241,7 +241,7 @@ function updateStageObjects3() {
 }
 
 function blockIsClear(x,y) {
-    var col, row
+    let col, row
 
     col = Math.floor(x / wallSize)
     row = Math.floor(y / wallSize)
@@ -280,7 +280,7 @@ function registerMouseUp(event) {
 
 
 function handleMouseMove(event) {
-    var mouseX, mouseY
+    let mouseX, mouseY
 
     if (isDragging) {
         mouseX = event.clientX - canvas.offsetLeft
@@ -297,7 +297,7 @@ function handleMouseMove(event) {
 
 
 function handleMouseDown(event) {
-    var mouseX, mouseY
+    let mouseX, mouseY
 
     if (event.which === 3 || event.metaKey) {
         mouseButton = 3
@@ -326,7 +326,7 @@ function handleMouseUp(event) {
 
 
 function setWall(x, y) {
-    var row, col
+    let row, col
 
     row = Math.floor(y / wallSize)
     col = Math.floor(x / wallSize)
@@ -342,7 +342,7 @@ function setWall(x, y) {
 
 
 function unsetWall(x, y) {
-    var row, col
+    let row, col
 
     row = Math.floor(y / wallSize)
     col = Math.floor(x / wallSize)
