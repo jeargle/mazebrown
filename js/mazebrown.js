@@ -47,16 +47,16 @@ function init() {
     canvas = document.getElementById("myCanvas")
     context = canvas.getContext("2d")
     initStageObjects()
-    drawStageObjects1()
+    drawStageObjects()
     // setInterval(updateStage, timeInterval)
     setTimeout(updateStage, timeInterval)
 }
 
 function updateStage() {
     t += timeInterval
-    clearCanvas1()
-    updateStageObjects1()
-    drawStageObjects1()
+    clearCanvas()
+    updateStageObjects()
+    drawStageObjects()
     setTimeout(updateStage, timeInterval)
 }
 
@@ -102,7 +102,7 @@ function initStageObjects() {
     }
 }
 
-function drawStageObjects1() {
+function drawStageObjects() {
     let i, j
 
     for (i=0; i<numWallRows; i++) {
@@ -142,18 +142,8 @@ function drawStageObjects1() {
 
 }
 
-function drawStageObjects2() {
-    context.beginPath()
-    context.rect(myRectangle.x, myRectangle.y,
-	         myRectangle.width, myRectangle.height)
-    context.fillStyle = "#8ED6FF"
-    context.fill()
-    context.lineWidth = myRectangle.borderWidth
-    context.strokeStyle = "darkblue"
-    context.stroke()
-}
 
-function updateStageObjects1() {
+function updateStageObjects() {
     let i, direction, nextX, nextY, scale
 
     if (mouseDown != null) {
@@ -218,27 +208,6 @@ function updateStageObjects1() {
     }
 }
 
-function updateStageObjects2() {
-    let nextX, nextY
-
-    // Move rectangle randomly +-1 unit in the x and/or y directions
-    nextX = (Math.floor(Math.random()*3) - 1)*5 + myRectangle.x
-    nextY = (Math.floor(Math.random()*3) - 1)*5 + myRectangle.y
-    myRectangle.x = nextX
-    myRectangle.y = nextY
-    myRoute.push(new Point(nextX + myRectangle.width/2,
-                           nextY + myRectangle.height/2))
-}
-
-function updateStageObjects3() {
-    let nextX, nextY
-
-    // Move rectangle randomly +-1 unit in the x and/or y directions
-    nextX = Math.floor(Math.random()*3) - 1 + myRectangle.x
-    nextY = Math.floor(Math.random()*3) - 1 + myRectangle.y
-    myRectangle.x = nextX
-    myRectangle.y = nextY
-}
 
 function blockIsClear(x,y) {
     let col, row
@@ -251,16 +220,9 @@ function blockIsClear(x,y) {
     return false
 }
 
-function clearCanvas1() {
-    context.clearRect(0,0,canvas.width, canvas.height)
-}
 
-function clearCanvas2() {
-    context.clearRect(myRectangle.x-padding, myPaddedRectangle.y-padding,
-	              myPaddedRectangle.width+(padding*2), myPaddedRectangle.height+(padding*2))
-    // context.clearRect(myPaddedRectangle.x, myPaddedRectangle.y,
-    //                   myPaddedRectangle.width, myPaddedRectangle.height)
-    // context.clearRect(0,0,canvas.width, canvas.height)
+function clearCanvas() {
+    context.clearRect(0,0,canvas.width, canvas.height)
 }
 
 
