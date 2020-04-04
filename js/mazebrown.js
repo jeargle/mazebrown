@@ -55,6 +55,8 @@ let Rectangle = class {
     height = 0
     borderWidth = 0
     fillStyle = "#FFFFFF"
+    direction = 0
+    momentum = 0
 
     /**
      * Initialize the class.
@@ -65,13 +67,15 @@ let Rectangle = class {
      * @param borderWidth {number} - width of border
      * @param fillStyle {string} - hex RGB color
      */
-    constructor(x, y, width, height, borderWidth, fillStyle) {
+    constructor(x, y, width, height, borderWidth, fillStyle, momentum) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
         this.borderWidth = borderWidth
         this.fillStyle = fillStyle
+        this.direction = Math.floor(Math.random()*4)
+        this.momentum = momentum
     }
 }
 
@@ -81,7 +85,6 @@ function init() {
     context = canvas.getContext("2d")
     initStageObjects()
     drawStageObjects()
-    // setInterval(updateStage, timeInterval)
     setTimeout(updateStage, timeInterval)
 }
 
@@ -105,6 +108,7 @@ function initStageObjects() {
     centerY = canvas.height/2
     width = 9
     height = 9
+    momentum = 0.8
 
     for (i=0; i<numRectangles; i++) {
         color = colorWheel.shift(color)
@@ -115,7 +119,8 @@ function initStageObjects() {
             width,
             height,
             padding,
-            color
+            color,
+            momentum
         )
         myRoutes[i] = new Array(routeLength)
         for (j=0; j<routeLength; j++) {
@@ -187,7 +192,7 @@ function drawStageObjects() {
 
 
 function updateStageObjects() {
-    let i, direction, nextX, nextY, scale
+    let i, rectangle, direction, nextX, nextY, scale
 
     if (mouseDown != null) {
         handleMouseDown(mouseDown)
@@ -206,48 +211,61 @@ function updateStageObjects() {
 
     // Move rectangle randomly +-1 unit in the x and/or y directions
     for (i=0; i<numRectangles; i++) {
-        direction = Math.floor(Math.random()*4)
+        rectangle = myRectangles[i]
+        if (rectangle.direction === -1 ||
+            rectangle.momentum <= Math.random()) {
+            rectangle.direction = Math.floor(Math.random()*4)
+        }
+        direction = rectangle.direction
         nextX = 0
         nextY = 0
         scale = 5
         switch(direction)
         {
-            case 0:
-            if (blockIsClear(myRectangles[i].x + myRectangles[i].width + scale, myRectangles[i].y) &&
-                blockIsClear(myRectangles[i].x + myRectangles[i].width + scale, myRectangles[i].y + myRectangles[i].height) &&
-                myRectangles[i].x + scale < canvas.width - myRectangles[i].width) {
+            case 0:  // right
+            if (blockIsClear(rectangle.x + rectangle.width + scale, rectangle.y) &&
+                blockIsClear(rectangle.x + rectangle.width + scale, rectangle.y + rectangle.height) &&
+                rectangle.x + scale < canvas.width - rectangle.width) {
                 nextX = scale
+            } else {
+                rectangle.direction = -1
             }
             break
-            case 1:
-            if (blockIsClear(myRectangles[i].x, myRectangles[i].y + myRectangles[i].height + scale) &&
-                blockIsClear(myRectangles[i].x + myRectangles[i].width, myRectangles[i].y + myRectangles[i].height + scale) &&
-	        myRectangles[i].y + scale < canvas.height - myRectangles[i].height) {
+            case 1:  // down
+            if (blockIsClear(rectangle.x, rectangle.y + rectangle.height + scale) &&
+                blockIsClear(rectangle.x + rectangle.width, rectangle.y + rectangle.height + scale) &&
+	        rectangle.y + scale < canvas.height - rectangle.height) {
                 nextY = scale
+            } else {
+                rectangle.direction = -1
             }
             break
-            case 2:
-            if (blockIsClear(myRectangles[i].x - scale, myRectangles[i].y) &&
-                blockIsClear(myRectangles[i].x - scale, myRectangles[i].y + myRectangles[i].height) &&
-	        myRectangles[i].x - scale > 0) {
+            case 2:  // left
+            if (blockIsClear(rectangle.x - scale, rectangle.y) &&
+                blockIsClear(rectangle.x - scale, rectangle.y + rectangle.height) &&
+	        rectangle.x - scale > 0) {
                 nextX = -scale
+            } else {
+                rectangle.direction = -1
             }
             break
-            case 3:
-            if (blockIsClear(myRectangles[i].x, myRectangles[i].y - scale) &&
-                blockIsClear(myRectangles[i].x + myRectangles[i].width, myRectangles[i].y - scale) &&
-	        myRectangles[i].y - scale > 0) {
+            case 3:  // up
+            if (blockIsClear(rectangle.x, rectangle.y - scale) &&
+                blockIsClear(rectangle.x + rectangle.width, rectangle.y - scale) &&
+	        rectangle.y - scale > 0) {
                 nextY = -scale
+            } else {
+                rectangle.direction = -1
             }
             break
         }
-        nextX += myRectangles[i].x
-        nextY += myRectangles[i].y
-        myRectangles[i].x = nextX
-        myRectangles[i].y = nextY
+        nextX += rectangle.x
+        nextY += rectangle.y
+        rectangle.x = nextX
+        rectangle.y = nextY
         myRoutes[i].shift()
-        myRoutes[i].push(new Point(nextX + myRectangles[i].width/2,
-                                   nextY + myRectangles[i].height/2))
+        myRoutes[i].push(new Point(nextX + rectangle.width/2,
+                                   nextY + rectangle.height/2))
     }
 }
 
