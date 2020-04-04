@@ -29,19 +29,52 @@ let mouseUp = null
 let isDragging = false
 let mouseButton = 1
 
-function Point(x,y) {
-    this.x = x
-    this.y = y
+
+let Point = class {
+
+    x = 0
+    y = 0
+
+    /**
+     * Initialize the class.
+     * @param x {number} - x coordinate
+     * @param y {number} - y coordinate
+     */
+    constructor(x, y) {
+        this.x = x
+        this.y = y
+    }
 }
 
-function Rectangle(x, y, width, height, borderWidth, fillStyle) {
-    this.x = x
-    this.y = y
-    this.width = width
-    this.height = height
-    this.borderWidth = borderWidth
-    this.fillStyle = fillStyle
+
+let Rectangle = class {
+
+    x = 0
+    y = 0
+    width = 0
+    height = 0
+    borderWidth = 0
+    fillStyle = "#FFFFFF"
+
+    /**
+     * Initialize the class.
+     * @param x {number} - x coordinate
+     * @param y {number} - y coordinate
+     * @param width {number} - width
+     * @param height {number} - height
+     * @param borderWidth {number} - width of border
+     * @param fillStyle {string} - hex RGB color
+     */
+    constructor(x, y, width, height, borderWidth, fillStyle) {
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+        this.borderWidth = borderWidth
+        this.fillStyle = fillStyle
+    }
 }
+
 
 function init() {
     canvas = document.getElementById("myCanvas")
@@ -52,6 +85,7 @@ function init() {
     setTimeout(updateStage, timeInterval)
 }
 
+
 function updateStage() {
     t += timeInterval
     clearCanvas()
@@ -59,6 +93,7 @@ function updateStage() {
     drawStageObjects()
     setTimeout(updateStage, timeInterval)
 }
+
 
 function initStageObjects() {
     let width, height, color, i, req, lines
@@ -74,7 +109,14 @@ function initStageObjects() {
     for (i=0; i<numRectangles; i++) {
         color = colorWheel.shift(color)
         colorWheel.push(color)
-        myRectangles[i] = new Rectangle (centerX-(width/2),centerY-(height/2),width,height,padding,color)
+        myRectangles[i] = new Rectangle(
+            centerX-(width/2),
+            centerY-(height/2),
+            width,
+            height,
+            padding,
+            color
+        )
         myRoutes[i] = new Array(routeLength)
         for (j=0; j<routeLength; j++) {
             myRoutes[i][j] = new Point(centerX,centerY)
@@ -101,6 +143,7 @@ function initStageObjects() {
         }
     }
 }
+
 
 function drawStageObjects() {
     let i, j
