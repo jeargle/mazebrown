@@ -155,11 +155,19 @@ function drawStageObjects() {
 
     for (i=0; i<numWallRows; i++) {
         for (j=0; j<numWallCols; j++) {
-            if (walls[i][j] >= 1) {
+            if (walls[i][j] === 1) {
                 context.beginPath()
-	        context.rect(j*wallSize, i*wallSize, wallSize, wallSize)
+                context.rect(j*wallSize, i*wallSize, wallSize, wallSize)
                 context.fillStyle = "darkblue"
-	        context.fill()
+                context.fill()
+            } else if (walls[i][j] === 2) {
+                context.beginPath()
+                context.rect(j*wallSize, i*wallSize, wallSize, wallSize)
+                context.fillStyle = "firebrick"
+                context.fill()
+                context.lineWidth = padding
+                context.strokeStyle = "darkblue"
+                context.stroke()
             }
         }
     }
