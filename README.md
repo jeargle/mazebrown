@@ -22,3 +22,5 @@ mazebrown runs in web browsers and needs to be hosted by a webserver.  To host i
 ```
 
 This will start a server exposing that directory on port 8000.  You can then access the program by pointing your web browser to the URL `http://localhost:8000`.
+
+The maze files are simply 31-line, 31-column text files where 0s represent spaces and 1s represent walls.  Currently, the maze file is hard coded at line 132 of mazebrown.js.  The default is maze1.txt, but maze2.txt and maze3.txt are also present in the top-level directory.  You can create your own maze files, too.
